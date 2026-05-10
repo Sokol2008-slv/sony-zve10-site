@@ -1,0 +1,5 @@
+.DS_Store
+.vercel
+node_modules
+*.log
+input/sony_full.tiff

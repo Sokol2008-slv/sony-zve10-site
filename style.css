@@ -1,0 +1,452 @@
+/* ==========================================================================
+   SONY ZV-E10 II — Apple Editorial minimalism
+   Palette: white/black + sony red accent
+   Type: Inter (system fallback for SF Pro) + JetBrains Mono
+   ========================================================================== */
+
+*,
+*::before,
+*::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: #FFFFFF;
+  color: #0A0A0A;
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.5;
+  overflow-x: hidden;
+}
+
+/* Root sets CSS vars driven by JS for split-flip */
+:root {
+  --bg: #FFFFFF;
+  --fg: #0A0A0A;
+  --muted: #8E8E93;
+  --accent: #0A0A0A;
+  --split-deg: 180deg;
+  --split-bg-a: #FFFFFF;
+  --split-bg-b: #0A0A0A;
+  --hero-y: 0vh;
+}
+
+body { background: var(--bg); color: var(--fg); transition: background 0.4s ease, color 0.4s ease; }
+
+/* ==== Fixed 3D canvas =================================================== */
+#canvas-wrap {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+#canvas-wrap canvas { width: 100%; height: 100%; display: block; }
+
+/* ==== Split background layer (hard-edge flip) ============================= */
+#split-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(
+    var(--split-deg),
+    var(--split-bg-a) 0%,
+    var(--split-bg-a) 49.9%,
+    var(--split-bg-b) 50.1%,
+    var(--split-bg-b) 100%
+  );
+}
+
+/* ==== Nav ================================================================ */
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 20;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 40px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  mix-blend-mode: difference;
+  color: #fff;
+}
+.nav-left { font-weight: 700; letter-spacing: 0.35em; }
+.nav-right a {
+  color: inherit;
+  text-decoration: none;
+  margin-left: 28px;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+.nav-right a:hover { opacity: 1; }
+
+/* ==== Base typography ==================================================== */
+h1, h2, h3 {
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.0;
+}
+h1 { font-size: clamp(54px, 10vw, 180px); }
+h2 { font-size: clamp(42px, 7vw, 120px); }
+h3 { font-size: clamp(36px, 5.5vw, 88px); }
+.italic, i { font-style: italic; font-weight: 300; letter-spacing: -0.04em; }
+
+.eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 18px;
+}
+
+.lead { font-size: clamp(18px, 2vw, 26px); line-height: 1.4; max-width: 720px; color: rgba(0,0,0,0.7); }
+
+/* Relative wrap for readable content — above canvas + split-bg */
+section { position: relative; z-index: 10; }
+
+/* ==== Hero =============================================================== */
+.hero {
+  min-height: 100vh;
+  padding: 120px 40px 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  mix-blend-mode: difference;
+  color: #fff;
+}
+.hero-inner { max-width: 1400px; }
+.hero-kicker {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.3em;
+  opacity: 0.85;
+  margin-bottom: 28px;
+}
+.hero-title { font-size: clamp(56px, 11vw, 220px); }
+.hero-title .line { display: block; }
+.hero-title .line.italic { font-style: italic; font-weight: 300; opacity: 0.95; }
+.hero-sub {
+  margin-top: 32px;
+  font-size: clamp(18px, 1.8vw, 22px);
+  opacity: 0.8;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.hero-meta {
+  margin-top: 48px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  opacity: 0.6;
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.hero-meta span + span { /* separators */ }
+.scroll-hint {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.35em;
+  opacity: 0.5;
+}
+
+/* ==== Split intro block ================================================== */
+.block-split {
+  min-height: 100vh;
+  padding: 120px 40px;
+  display: flex;
+  align-items: center;
+}
+.block-split .block-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+.block-split h2 { max-width: 1100px; margin-bottom: 40px; }
+
+/* ==== Upgrade cards ====================================================== */
+/* Text is always pinned to ONE half of the screen.
+   3D camera is offset to the OPPOSITE half via three.js modelGroup.position.x. */
+.upgrade {
+  min-height: 100vh;
+  padding: 100px 40px;
+  display: flex;
+  align-items: center;
+  max-width: 1600px;
+  margin: 0 auto;
+  gap: 40px;
+}
+.upgrade-content {
+  max-width: 44vw;
+  width: 44vw;
+  padding: 28px 32px;
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-radius: 18px;
+  margin-left: auto;
+}
+.upgrade.alt .upgrade-content { margin-left: 0; margin-right: auto; }
+
+body.on-dark .upgrade-content {
+  background: rgba(10, 10, 12, 0.82);
+  color: #fff;
+}
+
+.upgrade-num {
+  position: absolute;
+  top: 60px;
+  left: 40px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(64px, 10vw, 130px);
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  opacity: 0.9;
+  pointer-events: none;
+}
+.upgrade.alt .upgrade-num { left: auto; right: 40px; }
+.upgrade-content h3 { margin-bottom: 28px; }
+.upgrade-content p { font-size: clamp(17px, 1.6vw, 20px); line-height: 1.55; max-width: 560px; opacity: 0.75; }
+
+.kv { margin-top: 56px; border-top: 1px solid currentColor; opacity: 0.9; }
+.kv > div {
+  display: flex;
+  justify-content: space-between;
+  padding: 18px 0;
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.kv .k { opacity: 0.55; }
+.kv .v { font-weight: 500; }
+
+/* ==== CTA ================================================================ */
+.cta {
+  min-height: 100vh;
+  padding: 120px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  text-align: left;
+}
+.cta > * {
+  max-width: 48vw;
+  padding: 14px 24px;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-radius: 14px;
+}
+.cta .eyebrow { padding: 10px 18px; border-radius: 10px; }
+.cta h2 { font-size: clamp(64px, 11vw, 180px); margin: 18px 0 18px; line-height: 1.0; }
+.cta p { font-size: 18px; opacity: 0.8; margin-bottom: 36px; }
+.cta .buy-btn { background: #0A0A0A !important; color: #fff; display: inline-block; padding: 18px 36px; border-radius: 40px; }
+.buy-btn {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #fff;
+  background: var(--accent);
+  padding: 20px 44px;
+  border-radius: 40px;
+  transition: transform 0.3s, background 0.3s;
+}
+.buy-btn:hover { transform: translateY(-2px); background: #2A2A2A; }
+body.on-dark .buy-btn { background: #FFFFFF; color: #0A0A0A; }
+body.on-dark .buy-btn:hover { background: #E6E6E6; }
+
+/* ==== Footer ============================================================= */
+footer {
+  position: relative;
+  z-index: 10;
+  padding: 40px;
+  display: flex;
+  justify-content: space-between;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  opacity: 0.5;
+  border-top: 1px solid rgba(0,0,0,0.08);
+}
+
+/* ==== Dark-mode invariant for split-black sections ======================= */
+body.on-dark { color: #fff; }
+body.on-dark .eyebrow,
+body.on-dark .kv > div,
+body.on-dark .lead,
+body.on-dark .upgrade-content p { color: rgba(255,255,255,0.85); }
+body.on-dark .kv { border-top-color: rgba(255,255,255,0.4); }
+body.on-dark .kv > div { border-bottom-color: rgba(255,255,255,0.15); }
+
+/* ==========================================================================
+   RESPONSIVE — 4 breakpoints
+   1440 desktop / 1024 laptop / 768 tablet / 480 small mobile
+   ========================================================================== */
+
+/* ── Tablet (768-1023): sidebar + heavy effects still on, smaller padding */
+@media (max-width: 1023px) {
+  .nav { padding: 20px 32px; }
+  .hero, .block-split, .cta { padding: 100px 32px; }
+  .upgrade,
+  .upgrade.alt {
+    display: block;
+    padding: 80px 32px;
+  }
+  .upgrade-content,
+  .upgrade.alt .upgrade-content {
+    width: 100%;
+    max-width: 100%;
+    margin: 80px 0 0;
+  }
+  .upgrade-num { font-size: 96px; top: 30px; left: 32px; }
+  .upgrade.alt .upgrade-num { right: 32px; }
+
+  /* Hero on tablet: smaller H1, less mix-blend issues */
+  .hero-title { font-size: clamp(56px, 9vw, 140px); }
+}
+
+/* ── Mobile (< 768): aggressive simplification */
+@media (max-width: 767px) {
+  /* === Disable heavy GPU effects on mobile === */
+  .nav { mix-blend-mode: normal; color: #0A0A0A; background: rgba(255,255,255,0.85); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+  body.on-dark .nav { color: #FFFFFF; background: rgba(10,10,12,0.85); }
+  .hero { mix-blend-mode: normal; color: #0A0A0A; }
+  body.on-dark .hero { color: #FFFFFF; }
+
+  /* Simplify split-bg: solid instead of gradient diagonal flip */
+  #split-bg {
+    background: var(--split-bg-a);
+    transition: background 600ms ease;
+  }
+
+  /* Padding 24px throughout */
+  .nav { padding: 16px 24px; }
+  .hero, .block-split, .upgrade, .cta { padding: 80px 24px; }
+  .upgrade-content { padding: 20px 24px; border-radius: 12px; }
+
+  /* Typography — clamp for fluid sizing */
+  .hero-title { font-size: clamp(40px, 11vw, 72px); }
+  h2 { font-size: clamp(32px, 8vw, 56px); }
+  h3 { font-size: clamp(28px, 7vw, 44px); }
+  .lead { font-size: clamp(15px, 4vw, 18px); }
+
+  /* Upgrade card — content sizing */
+  .upgrade-num {
+    font-size: 64px;
+    top: 24px;
+    left: 24px;
+    opacity: 0.5;
+  }
+  .upgrade.alt .upgrade-num { right: 24px; left: auto; }
+  .upgrade-content h3 { margin-bottom: 20px; }
+  .upgrade-content p { font-size: 15px; line-height: 1.55; opacity: 0.85; }
+
+  /* KV table — show only first row prominently, rest collapsed */
+  .kv { margin-top: 24px; }
+  .kv > div { padding: 12px 0; font-size: 11px; }
+  /* First row — make it the "hero number" */
+  .kv > div:first-child {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    padding: 8px 0 16px;
+  }
+  .kv > div:first-child .k {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+  }
+  .kv > div:first-child .v {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    text-transform: none;
+  }
+
+  /* CTA — full width, less padding overhead */
+  .cta > * { max-width: 100%; padding: 12px 18px; }
+  .cta h2 { font-size: clamp(48px, 12vw, 72px); }
+  .cta .buy-btn { padding: 16px 28px; font-size: 12px; width: auto; }
+
+  /* Hero meta — smaller */
+  .hero-meta { font-size: 11px; gap: 12px; margin-top: 32px; }
+  .hero-kicker { font-size: 11px; margin-bottom: 20px; }
+  .hero-sub { font-size: 16px; margin-top: 24px; max-width: 90vw; }
+
+  /* Footer */
+  footer { flex-direction: column; gap: 8px; padding: 32px 24px; font-size: 10px; }
+}
+
+/* ── Small mobile (< 480) — iPhone SE territory */
+@media (max-width: 479px) {
+  .hero-title { font-size: clamp(36px, 11vw, 56px); }
+  .upgrade-num { font-size: 52px; }
+  .nav-right a { margin-left: 16px; }
+}
+
+/* ── Reduced motion — kill all animations === */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Sample video section ── */
+.sample-video {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 40px 80px;
+}
+.sample-video-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #0A0A0A;
+  border-radius: 16px;
+  overflow: hidden;
+}
+.sample-video-frame video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.sample-video-caption {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  opacity: 0.6;
+  margin-top: 16px;
+  text-align: center;
+}
+@media (max-width: 1023px) {
+  .sample-video { padding: 0 32px 64px; }
+}
+@media (max-width: 767px) {
+  .sample-video { padding: 0 24px 48px; }
+  .sample-video-frame { border-radius: 12px; }
+}

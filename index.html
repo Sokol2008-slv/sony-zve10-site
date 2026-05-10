@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Sony ZV-E10 II — Creator's Mirrorless</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<!-- Fixed canvas для 3D камеры -->
+<div id="canvas-wrap">
+  <canvas id="c"></canvas>
+</div>
+
+<!-- Split-flip background overlay (animates cliping) -->
+<div id="split-bg"></div>
+
+<!-- Nav -->
+<nav class="nav">
+  <div class="nav-left">SONY</div>
+  <div class="nav-right">
+    <a href="#specs">SPECS</a>
+    <a href="#upgrades">UPGRADES</a>
+    <a href="#buy">BUY</a>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-kicker">ZV-E10 II · Mirrorless · 2024</div>
+    <h1 class="hero-title">
+      <span class="line">The creator's</span>
+      <span class="line italic">next camera.</span>
+    </h1>
+    <p class="hero-sub">Redesigned sensor. Faster brain. Built for video.</p>
+    <div class="hero-meta">
+      <span>26 MP</span><span>/</span>
+      <span>APS-C Exmor R</span><span>/</span>
+      <span>BIONZ XR</span>
+    </div>
+  </div>
+  <div class="scroll-hint">SCROLL</div>
+</section>
+
+<!-- Section 2: Specs intro with split-flip transition -->
+<section class="block-split" id="specs">
+  <div class="block-inner">
+    <div class="eyebrow">WHAT'S NEW</div>
+    <h2>Four upgrades. One story.</h2>
+    <p class="lead">
+      Everything that made the first ZV-E10 a creator favorite —
+      rebuilt from the sensor up.
+    </p>
+  </div>
+</section>
+
+<!-- Upgrade 1: Sensor -->
+<section class="upgrade" id="upgrades">
+  <div class="upgrade-num">01</div>
+  <div class="upgrade-content">
+    <div class="eyebrow">SENSOR</div>
+    <h3>26 megapixels<br><i>of detail.</i></h3>
+    <p>
+      All-new APS-C Exmor R CMOS with back-illuminated architecture.
+      More light, more color, cleaner shadows in low-light video.
+    </p>
+    <div class="kv">
+      <div><span class="k">Resolution</span><span class="v">26.0 MP</span></div>
+      <div><span class="k">Size</span><span class="v">APS-C (23.3 × 15.5 mm)</span></div>
+      <div><span class="k">ISO range</span><span class="v">100-32,000</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- Upgrade 2: Processor -->
+<section class="upgrade alt" id="processor">
+  <div class="upgrade-num">02</div>
+  <div class="upgrade-content">
+    <div class="eyebrow">PROCESSOR</div>
+    <h3>BIONZ XR.<br><i>8× faster.</i></h3>
+    <p>
+      The same chip inside the α7 IV. Real-time Eye AF across humans,
+      animals, birds — locking on in under a frame.
+    </p>
+    <div class="kv">
+      <div><span class="k">Chip</span><span class="v">BIONZ XR</span></div>
+      <div><span class="k">Speed vs. Mark I</span><span class="v">×8</span></div>
+      <div><span class="k">AF points</span><span class="v">759 phase-detect</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- Upgrade 3: Video -->
+<section class="upgrade" id="video">
+  <div class="upgrade-num">03</div>
+  <div class="upgrade-content">
+    <div class="eyebrow">VIDEO</div>
+    <h3>4K/60p.<br><i>10-bit 4:2:2.</i></h3>
+    <p>
+      Oversampled from 5.6K for maximum clarity.
+      S-Cinetone and S-Log3 for the look you want.
+    </p>
+    <div class="kv">
+      <div><span class="k">Max record</span><span class="v">4K/60p 10-bit</span></div>
+      <div><span class="k">Codec</span><span class="v">XAVC HS / XAVC S-I</span></div>
+      <div><span class="k">Profiles</span><span class="v">S-Cinetone · S-Log3</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- Upgrade 4: Battery -->
+<section class="upgrade alt" id="battery">
+  <div class="upgrade-num">04</div>
+  <div class="upgrade-content">
+    <div class="eyebrow">BATTERY</div>
+    <h3>NP-FZ100.<br><i>All day.</i></h3>
+    <p>
+      The big battery from the α7 series, in the smallest body.
+      Up to 195 minutes of continuous 4K.
+    </p>
+    <div class="kv">
+      <div><span class="k">Battery</span><span class="v">NP-FZ100</span></div>
+      <div><span class="k">Stills</span><span class="v">610 shots (CIPA)</span></div>
+      <div><span class="k">USB-C</span><span class="v">USB 3.2 Gen 2</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- Buy CTA -->
+<section class="cta" id="buy">
+  <div class="eyebrow">AVAILABLE NOW</div>
+  <h2>$998<br>Body only.</h2>
+  <p>Or $1,098 with the new 16-50mm F3.5-5.6 OSS II kit lens.</p>
+  <a href="https://www.sony.com" class="buy-btn">Buy at Sony.com →</a>
+</section>
+
+<footer>
+  <div>© 2026 — Unofficial concept</div>
+  <div>Built with three.js · GSAP · Lenis</div>
+</footer>
+
+<!-- Libraries via CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://unpkg.com/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
