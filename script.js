@@ -340,7 +340,8 @@
   });
 
   function setPose({ offX, tilt, scale }) {
-    target.offX = offX;
+    // На mobile всегда центрируем модель — уход в стороны не помещается на узком экране
+    target.offX = IS_MOBILE ? 0 : offX;
     target.rotX = -0.1 + tilt;
     target.targetScale = scale;
   }
